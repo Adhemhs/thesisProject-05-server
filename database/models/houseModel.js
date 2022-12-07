@@ -2,7 +2,7 @@ const db = require('../index');
 
 
 module.exports = {
-    addHouse: (body,id, cb) => {
+    addHouse: (body,id,cb) => {
         let sql = `INSERT INTO house SET photo=?, description=?, price=?, latiude=?,longitude=?, adress=?, city=?,rate=? , homeOwner_idhomeOwner=? ;`;
         db.query(sql,[body.photo,body.description,body.price,body.latiude,body.longitude,body.adress,body.city,id], (error, results) => {
             cb(error, results);

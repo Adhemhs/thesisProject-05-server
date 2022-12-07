@@ -238,7 +238,7 @@ module.exports = {
   getStudentById: (req, res) => {
     students.getStudentById(req.params.id, (error, results) => {
       error ? res.status(500).send(err) : res.status(200).json(results);
-    });
+    }); 
   },
   deleteStudent: (req, res) => {
     students.deleteStudent(req.params.id, (error, results) => {

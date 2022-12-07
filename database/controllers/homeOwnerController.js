@@ -78,7 +78,7 @@ module.exports = {
   verifyCode: async (req, res) => {
     try {
       console.log(req.body)
-      db.query(
+      conn.query(
         `select * from homeOwner where email='${req.body.email}'`,
         (err, result) => {
           const token = jwt.sign(
@@ -90,7 +90,7 @@ module.exports = {
             result.length &&
             result[0].activationCode === req.body.activationCode
           ) {
-            db.query(
+            conn.query(
               `update homeOwner set cookie=1 where email='${req.body.email}'`,
               (errr, result1) => {
                 errr
@@ -111,8 +111,8 @@ module.exports = {
   },
 
   login: (req, res, next) => {
-    db.query(
-      `SELECT * FROM homeOwner WHERE email = ${db.escape(req.body.email)}`,
+    conn.query(
+      `SELECT * FROM homeOwner WHERE email = ${conn.escape(req.body.email)}`,
       (err, result) => {
         // user does not exists
         if (err) {
@@ -120,7 +120,7 @@ module.exports = {
             msg: err,
           });
         } else if (!result.length) {
-          return res.status(401).send({
+          return res.status(407).send({
             msg: "Email or password is incorrect!",
           });
         } else if (result[0].cookie === 0) {
@@ -173,7 +173,7 @@ module.exports = {
     }
     const theToken = req.headers.authorization.split(" ")[1];
     const decoded = jwt.verify(theToken, process.env.ACCESS_TOKEN_SECRET);
-    db.query(
+    conn.query(
       "SELECT * FROM homeOwner where idhomeOwner=?",
       decoded.idhomeOwner,
       function (error, results) {
